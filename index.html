@@ -606,14 +606,18 @@
       flex-direction: column;
       justify-content: center;
       gap: 5px;
-      width: 38px;
-      height: 38px;
+      width: 44px;
+      height: 44px;
       background: rgba(212, 175, 55, 0.08);
       border: 1px solid var(--color-gold-border);
       border-radius: var(--radius-sm);
       cursor: pointer;
-      padding: 8px;
-      z-index: 1002;
+      padding: 10px 9px;
+      z-index: 1003;
+      position: relative;
+      pointer-events: auto;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .hamburger-btn span {
@@ -655,6 +659,7 @@
       z-index: 1001;
       box-shadow: -15px 0 50px rgba(0, 0, 0, 0.9);
       overflow-y: auto;
+      pointer-events: auto;
     }
 
     .mobile-nav-drawer.open {
@@ -745,6 +750,7 @@
       width: 100%;
       height: 100%;
       z-index: 1;
+      pointer-events: none;
       background-image: 
         radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.15) 0%, transparent 55%),
         linear-gradient(180deg, rgba(5, 5, 8, 0.65) 0%, rgba(8, 8, 12, 0.82) 60%, rgba(5, 5, 8, 0.98) 100%),
@@ -791,6 +797,12 @@
       grid-template-columns: 1.15fr 0.85fr;
       gap: 3.5rem;
       align-items: center;
+    }
+
+    .hero-content,
+    .hero-visual-wrapper {
+      position: relative;
+      z-index: 4;
     }
 
     .hero-content {
@@ -2871,11 +2883,100 @@
         padding-bottom: 4.5rem;
       }
 
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .hero-section {
+        min-height: auto;
+        padding-top: calc(var(--header-height) + 1.5rem);
+        padding-bottom: 4rem;
+      }
+
+      .hero-bg-layer {
+        background-image:
+          linear-gradient(90deg, rgba(5, 5, 8, 0.12) 0%, rgba(5, 5, 8, 0.28) 28%, rgba(5, 5, 8, 0.46) 58%, rgba(5, 5, 8, 0.72) 100%),
+          radial-gradient(circle at 50% 30%, rgba(212, 175, 55, 0.08) 0%, transparent 42%),
+          url('https://i.ibb.co/HjdgqrL/Chat-GPT-Image-Aug-30-2026-05-25-29-PM.png');
+        background-position: center center;
+        background-size: 220% auto;
+        background-repeat: no-repeat;
+        filter: saturate(1.2) contrast(1.12) brightness(1.08);
+        opacity: 1;
+      }
+
+      #heroCanvas {
+        opacity: 0.35;
+      }
+
+      .hero-badge {
+        letter-spacing: 0.12em;
+        font-size: 0.68rem;
+        padding: 0.45rem 0.8rem;
+      }
+
       .hero-heading {
         font-size: 2.35rem;
       }
       .hero-description {
         font-size: 1rem;
+      }
+      .hero-cta-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.8rem;
+      }
+      .hero-cta-group .btn,
+      .hero-secondary-link {
+        width: 100%;
+        justify-content: center;
+        position: relative;
+        z-index: 5;
+      }
+      .hero-secondary-link {
+        margin-left: 0;
+      }
+      .hero-visual-wrapper {
+        gap: 1rem;
+      }
+      .hero-luxury-card {
+        padding: 1.25rem 1.15rem;
+      }
+      .card-title {
+        font-size: 1.15rem;
+      }
+      .hero-destination-pills {
+        gap: 0.45rem;
+      }
+      .dest-pill {
+        padding: 0.25rem 0.6rem;
+        font-size: 0.7rem;
+      }
+
+      .trust-strip-section {
+        padding: 1.6rem 0;
+      }
+      .trust-strip-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .trust-item:not(:last-child)::after {
+        display: none;
+      }
+      .trust-item {
+        gap: 0.8rem;
+      }
+      .trust-title {
+        font-size: 1rem;
+      }
+
+      .about-heading {
+        font-size: 2.05rem;
+      }
+      .about-floating-badge {
+        position: static;
+        max-width: none;
+        margin-top: 1.2rem;
       }
 
       .services-grid,
@@ -2927,6 +3028,18 @@
     }
 
     @media (max-width: 480px) {
+      .hero-bg-layer {
+        background-position: center center;
+        background-size: 260% auto;
+      }
+
+      .section-label {
+        font-size: 0.68rem;
+        letter-spacing: 0.12em;
+      }S
+      .section-title {
+        font-size: 1.7rem;
+      }
       .hero-heading {
         font-size: 1.95rem;
       }
@@ -2935,6 +3048,23 @@
       }
       .btn {
         width: 100%;
+      }
+      .hero-luxury-card {
+        padding: 1.1rem 1rem;
+      }
+      .card-icon-box {
+        width: 42px;
+        height: 42px;
+        font-size: 1.05rem;
+      }
+      .why-card {
+        padding: 1.35rem 1.1rem;
+      }
+      .destination-card {
+        min-height: 260px;
+      }
+      .dest-country-name {
+        font-size: 1.3rem;
       }
       .floating-whatsapp-btn {
         bottom: 20px;
@@ -2992,7 +3122,7 @@
       <!-- Header Actions -->
       <div class="header-actions">
         <!-- Language Switcher Indicator -->
-        <button class="lang-selector" id="langToggle" aria-label="Language Selector">
+        <button class="lang-selector" id="langToggle" aria-label="Language Selector" style="display: none;">
           <i class="fa-solid fa-globe"></i>
           <span class="active-lang">EN</span>
           <span>/</span>
@@ -3006,7 +3136,7 @@
         </a>
 
         <!-- Mobile Hamburger Button -->
-        <button class="hamburger-btn" id="mobileMenuBtn" aria-label="Toggle Mobile Menu" aria-expanded="false">
+        <button type="button" class="hamburger-btn" id="mobileMenuBtn" aria-label="Toggle Mobile Menu" aria-expanded="false" aria-controls="mobileDrawer">
           <span></span>
           <span></span>
           <span></span>
@@ -3020,46 +3150,46 @@
   <div class="mobile-nav-backdrop" id="navBackdrop"></div>
   <aside class="mobile-nav-drawer" id="mobileDrawer" aria-label="Mobile Navigation">
     <div class="mobile-nav-links">
-      <a href="#hero" class="mobile-nav-link active" onclick="closeMobileMenu()">
+      <a href="#hero" class="mobile-nav-link active">
         <span>Home</span>
         <i class="fa-solid fa-chevron-right"></i>
       </a>
-      <a href="#about" class="mobile-nav-link" onclick="closeMobileMenu()">
+      <a href="#about" class="mobile-nav-link">
         <span>About</span>
         <i class="fa-solid fa-chevron-right"></i>
       </a>
-      <a href="#visa-services" class="mobile-nav-link" onclick="closeMobileMenu()">
+      <a href="#visa-services" class="mobile-nav-link">
         <span>Visa Services</span>
         <i class="fa-solid fa-chevron-right"></i>
       </a>
-      <a href="#immigration" class="mobile-nav-link" onclick="closeMobileMenu()">
+      <a href="#immigration" class="mobile-nav-link">
         <span>Immigration</span>
         <i class="fa-solid fa-chevron-right"></i>
       </a>
-      <a href="#countries" class="mobile-nav-link" onclick="closeMobileMenu()">
+      <a href="#countries" class="mobile-nav-link">
         <span>Countries</span>
         <i class="fa-solid fa-chevron-right"></i>
       </a>
-      <a href="#process" class="mobile-nav-link" onclick="closeMobileMenu()">
+      <a href="#process" class="mobile-nav-link">
         <span>Process</span>
         <i class="fa-solid fa-chevron-right"></i>
       </a>
-      <a href="#documents" class="mobile-nav-link" onclick="closeMobileMenu()">
+      <a href="#documents" class="mobile-nav-link">
         <span>Document Checker</span>
         <i class="fa-solid fa-chevron-right"></i>
       </a>
-      <a href="#faq" class="mobile-nav-link" onclick="closeMobileMenu()">
+      <a href="#faq" class="mobile-nav-link">
         <span>FAQ</span>
         <i class="fa-solid fa-chevron-right"></i>
       </a>
-      <a href="#contact" class="mobile-nav-link" onclick="closeMobileMenu()">
+      <a href="#contact" class="mobile-nav-link">
         <span>Contact</span>
         <i class="fa-solid fa-chevron-right"></i>
       </a>
     </div>
 
     <div class="mobile-nav-footer">
-      <a href="#contact" class="btn btn-gold" style="width: 100%;" onclick="closeMobileMenu(); openConsultationModal(event);">
+      <a href="#contact" class="btn btn-gold mobile-nav-cta" style="width: 100%;">
         <span>Book Consultation</span>
         <i class="fa-solid fa-arrow-right"></i>
       </a>
@@ -4995,8 +5125,48 @@
       document.body.style.overflow = '';
     }
 
-    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-    navBackdrop.addEventListener('click', closeMobileMenu);
+    window.toggleMobileMenu = toggleMobileMenu;
+    window.openMobileMenu = openMobileMenu;
+    window.closeMobileMenu = closeMobileMenu;
+
+    if (mobileMenuBtn && !mobileMenuBtn.dataset.bound) {
+      mobileMenuBtn.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        toggleMobileMenu();
+      });
+      mobileMenuBtn.addEventListener('touchstart', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        toggleMobileMenu();
+      }, { passive: false });
+      mobileMenuBtn.dataset.bound = 'true';
+    }
+
+    if (navBackdrop) {
+      navBackdrop.addEventListener('click', closeMobileMenu);
+    }
+
+    document.querySelectorAll('.mobile-nav-link').forEach(function(link) {
+      link.addEventListener('click', function(event) {
+        closeMobileMenu();
+      });
+    });
+
+    const mobileNavCta = document.querySelector('.mobile-nav-cta');
+    if (mobileNavCta) {
+      mobileNavCta.addEventListener('click', function(event) {
+        event.preventDefault();
+        closeMobileMenu();
+        openConsultationModal(event);
+      });
+    }
+
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 992) {
+        closeMobileMenu();
+      }
+    });
 
     // Language Toggle Notification
     document.getElementById('langToggle').addEventListener('click', function() {
