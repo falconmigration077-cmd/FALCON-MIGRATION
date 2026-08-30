@@ -3783,8 +3783,8 @@
         
         <!-- 01: Canada -->
         <div class="destination-card" data-region="na" onclick="openCountryModal('Canada', 'Work • Study • Family • Business')">
-          <img src="https://images.unsplash.com/photo-1517935703635-271905454b30?q=80&w=800&auto=format&fit=crop" 
-               alt="Canada Immigration &amp; Visas" class="dest-bg-img" loading="lazy" />
+          <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=900&q=80" 
+               alt="Canada immigration and visa pathways" class="dest-bg-img" loading="lazy" />
           <div class="dest-overlay"></div>
           <div class="dest-content">
             <div class="dest-header-flex">
@@ -4593,42 +4593,25 @@
                 <div class="error-feedback" id="phoneError">Please enter a valid phone number.</div>
               </div>
 
-              <!-- Visa / Service Type -->
+              <!-- Country of Interest -->
               <div class="form-group">
-                <label for="serviceType" class="form-label">Visa / Service Type <span class="req">*</span></label>
-                <select id="serviceType" class="form-control" required>
-                  <option value="" disabled selected>Select category...</option>
-                  <option value="Work Visa">Work Visa / Permit</option>
-                  <option value="Student Visa">Student Visa</option>
-                  <option value="Tourist Visa">Tourist / Visit Visa</option>
-                  <option value="Business Visa">Business / Investor Visa</option>
-                  <option value="Family Visa">Family / Dependent Visa</option>
-                  <option value="Skilled Worker Visa">Skilled Worker Migration</option>
-                  <option value="Residence Visa">Permanent Residency</option>
-                  <option value="Transit Visa">Transit Visa</option>
+                <label for="countryInterest" class="form-label">Country of Interest <span class="req">*</span></label>
+                <select id="countryInterest" class="form-control" required>
+                  <option value="" disabled selected>Select destination country...</option>
+                  <option value="Canada">Canada</option>
+                  <option value="United Kingdom">United Kingdom</option>
+                  <option value="Australia">Australia</option>
+                  <option value="United States">United States</option>
+                  <option value="Germany">Germany</option>
+                  <option value="New Zealand">New Zealand</option>
+                  <option value="Ireland">Ireland</option>
+                  <option value="United Arab Emirates">United Arab Emirates</option>
+                  <option value="Saudi Arabia">Saudi Arabia</option>
+                  <option value="Schengen Europe">Schengen Europe</option>
+                  <option value="Other">Other Global Destination</option>
                 </select>
-                <div class="error-feedback" id="serviceError">Please select a service type.</div>
+                <div class="error-feedback" id="countryError">Please select your country of interest.</div>
               </div>
-            </div>
-
-            <!-- Country of Interest -->
-            <div class="form-group">
-              <label for="countryInterest" class="form-label">Country of Interest <span class="req">*</span></label>
-              <select id="countryInterest" class="form-control" required>
-                <option value="" disabled selected>Select destination country...</option>
-                <option value="Canada">Canada</option>
-                <option value="United Kingdom">United Kingdom</option>
-                <option value="Australia">Australia</option>
-                <option value="United States">United States</option>
-                <option value="Germany">Germany</option>
-                <option value="New Zealand">New Zealand</option>
-                <option value="Ireland">Ireland</option>
-                <option value="United Arab Emirates">United Arab Emirates</option>
-                <option value="Saudi Arabia">Saudi Arabia</option>
-                <option value="Schengen Europe">Schengen Europe</option>
-                <option value="Other">Other Global Destination</option>
-              </select>
-              <div class="error-feedback" id="countryError">Please select your country of interest.</div>
             </div>
 
             <!-- Message -->
@@ -5101,6 +5084,7 @@
     const navBackdrop = document.getElementById('navBackdrop');
 
     function toggleMobileMenu() {
+      if (!mobileDrawer || !navBackdrop || !mobileMenuBtn) return;
       const isOpen = mobileDrawer.classList.contains('open');
       if (isOpen) {
         closeMobileMenu();
@@ -5110,6 +5094,7 @@
     }
 
     function openMobileMenu() {
+      if (!mobileDrawer || !navBackdrop || !mobileMenuBtn) return;
       mobileDrawer.classList.add('open');
       navBackdrop.classList.add('open');
       mobileMenuBtn.classList.add('active');
@@ -5118,6 +5103,7 @@
     }
 
     function closeMobileMenu() {
+      if (!mobileDrawer || !navBackdrop || !mobileMenuBtn) return;
       mobileDrawer.classList.remove('open');
       navBackdrop.classList.remove('open');
       mobileMenuBtn.classList.remove('active');
@@ -5130,16 +5116,16 @@
     window.closeMobileMenu = closeMobileMenu;
 
     if (mobileMenuBtn && !mobileMenuBtn.dataset.bound) {
-      mobileMenuBtn.addEventListener('click', function(event) {
-        event.preventDefault();
-        event.stopPropagation();
+      const handleMobileMenuToggle = function(event) {
+        if (event) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
         toggleMobileMenu();
-      });
-      mobileMenuBtn.addEventListener('touchstart', function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        toggleMobileMenu();
-      }, { passive: false });
+      };
+
+      mobileMenuBtn.addEventListener('click', handleMobileMenuToggle);
+      mobileMenuBtn.addEventListener('touchstart', handleMobileMenuToggle, { passive: false });
       mobileMenuBtn.dataset.bound = 'true';
     }
 
@@ -5148,7 +5134,7 @@
     }
 
     document.querySelectorAll('.mobile-nav-link').forEach(function(link) {
-      link.addEventListener('click', function(event) {
+      link.addEventListener('click', function() {
         closeMobileMenu();
       });
     });
@@ -5169,9 +5155,12 @@
     });
 
     // Language Toggle Notification
-    document.getElementById('langToggle').addEventListener('click', function() {
-      alert("Language Notice: Falcon Migration provides consultations in English, Arabic, Hindi, and Gujarati. For Arabic / Arabic-speaking assistance, please connect with our Middle East desk via WhatsApp (+91 7359145348).");
-    });
+    const langToggle = document.getElementById('langToggle');
+    if (langToggle) {
+      langToggle.addEventListener('click', function() {
+        alert('Language Notice: Falcon Migration provides consultations in English, Arabic, Hindi, and Gujarati. For Arabic / Arabic-speaking assistance, please connect with our Middle East desk via WhatsApp (+91 7359145348).');
+      });
+    }
 
     /* ==========================================================================
        4. HERO AMBIENT CANVAS PARTICLES (Golden Stardust)
@@ -5341,33 +5330,31 @@
     function copyChecklistToClipboard() {
       const category = document.getElementById('checklistCategoryName').textContent;
       const items = DOCUMENT_CHECKLISTS[category] || [];
-      const textToCopy = `Falcon Migration — ${category} Document Checklist:
+      const textToCopy = `Falcon Migration — ${category} Document Checklist:\n\n` +
+        items.map((it, idx) => `${idx + 1}. ${it}`).join('\n') +
+        `\n\nNote: Document requirements vary by destination and individual applicant profile. Contact Info@falconmigration.co for tailored review.`;
 
-` + 
-        items.map((it, idx) => `${idx + 1}. ${it}`).join('
-') + 
-        `
-
-Note: Document requirements vary by destination and individual applicant profile. Contact Info@falconmigration.co for tailored review.`;
-
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        alert(`Checklist for ${category} copied to clipboard!`);
-      }).catch(() => {
-        alert(`Checklist ready:
-
-${textToCopy}`);
-      });
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          alert(`Checklist for ${category} copied to clipboard!`);
+        }).catch(() => {
+          alert(`Checklist ready:\n\n${textToCopy}`);
+        });
+      } else {
+        alert(`Checklist ready:\n\n${textToCopy}`);
+      }
     }
 
     function openConsultationWithDoc() {
       const category = document.getElementById('checklistCategoryName').textContent;
-      const serviceSelect = document.getElementById('serviceType');
-      if (serviceSelect) {
-        for (let i = 0; i < serviceSelect.options.length; i++) {
-          if (serviceSelect.options[i].value.includes(category) || category.includes(serviceSelect.options[i].value)) {
-            serviceSelect.selectedIndex = i;
-            break;
-          }
+      const countrySelect = document.getElementById('countryInterest');
+      if (countrySelect && category) {
+        const matchingCountry = Array.from(countrySelect.options).find(option =>
+          option.text.toLowerCase().includes(category.toLowerCase()) ||
+          category.toLowerCase().includes(option.text.toLowerCase())
+        );
+        if (matchingCountry) {
+          countrySelect.value = matchingCountry.value;
         }
       }
       document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
@@ -5465,7 +5452,6 @@ ${textToCopy}`);
       const name = document.getElementById('fullName');
       const email = document.getElementById('emailAddress');
       const phone = document.getElementById('phoneNumber');
-      const service = document.getElementById('serviceType');
       const country = document.getElementById('countryInterest');
       const message = document.getElementById('userMessage').value;
       const notice = document.getElementById('formNotice');
@@ -5504,16 +5490,6 @@ ${textToCopy}`);
         document.getElementById('phoneError').style.display = 'none';
       }
 
-      // Validate Service
-      if (!service.value) {
-        service.classList.add('error');
-        document.getElementById('serviceError').style.display = 'block';
-        isValid = false;
-      } else {
-        service.classList.remove('error');
-        document.getElementById('serviceError').style.display = 'none';
-      }
-
       // Validate Country
       if (!country.value) {
         country.classList.add('error');
@@ -5537,8 +5513,6 @@ I would like to request a consultation:
         `• Email: ${email.value.trim()}
 ` +
         `• Phone: ${phone.value.trim()}
-` +
-        `• Visa: ${service.value}
 ` +
         `• Country: ${country.value}
 ` +
