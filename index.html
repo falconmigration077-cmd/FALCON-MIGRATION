@@ -72,6 +72,8 @@
   }
   </script>
 
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
   <style>
     /* ==========================================================================
        1. BLACK & GOLD ROYAL LUXURY DESIGN TOKENS
@@ -4575,14 +4577,14 @@
               <!-- Full Name -->
               <div class="form-group">
                 <label for="fullName" class="form-label">Full Name <span class="req">*</span></label>
-                <input type="text" id="fullName" class="form-control" placeholder="e.g. Rahul Sharma" required />
+                <input type="text" id="fullName" name="name" class="form-control" placeholder="e.g. Rahul Sharma" required />
                 <div class="error-feedback" id="nameError">Please enter your full name.</div>
               </div>
 
               <!-- Email -->
               <div class="form-group">
                 <label for="emailAddress" class="form-label">Email Address <span class="req">*</span></label>
-                <input type="email" id="emailAddress" class="form-control" placeholder="name@example.com" required />
+                <input type="email" id="emailAddress" name="email" class="form-control" placeholder="name@example.com" required />
                 <div class="error-feedback" id="emailError">Please enter a valid email address.</div>
               </div>
             </div>
@@ -4591,14 +4593,14 @@
               <!-- Phone -->
               <div class="form-group">
                 <label for="phoneNumber" class="form-label">Phone Number <span class="req">*</span></label>
-                <input type="tel" id="phoneNumber" class="form-control" placeholder="+91 98765 43210" required />
+                <input type="tel" id="phoneNumber" name="phone" class="form-control" placeholder="+91 98765 43210" required />
                 <div class="error-feedback" id="phoneError">Please enter a valid phone number.</div>
               </div>
 
               <!-- Country of Interest -->
               <div class="form-group">
                 <label for="countryInterest" class="form-label">Country of Interest <span class="req">*</span></label>
-                <select id="countryInterest" class="form-control" required>
+                <select id="countryInterest" name="country" class="form-control" required>
                   <option value="" disabled selected>Select destination country...</option>
                   <option value="Canada">Canada</option>
                   <option value="United Kingdom">United Kingdom</option>
@@ -4619,24 +4621,15 @@
             <!-- Message -->
             <div class="form-group">
               <label for="userMessage" class="form-label">Message / Details (Optional)</label>
-              <textarea id="userMessage" class="form-control" placeholder="Briefly describe your timeline, background, or specific questions..."></textarea>
+              <textarea id="userMessage" name="message" class="form-control" placeholder="Briefly describe your timeline, background, or specific questions..."></textarea>
             </div>
 
             <button type="submit" class="btn btn-gold" style="width: 100%; padding: 1.05rem;">
-              <span>Send Enquiry</span>
+              <span class="submit-text">Send Enquiry</span>
               <i class="fa-solid fa-paper-plane"></i>
             </button>
 
-            <!-- Honest Feedback Notice -->
-            <div id="formNotice" class="form-submission-notice">
-              <i class="fa-solid fa-circle-check" style="margin-right: 6px;"></i>
-              <strong>Thank you.</strong> Your enquiry details have been prepared. Please connect the form to your preferred email/API service to enable live submissions.
-              <div style="margin-top: 10px;">
-                <a id="directWhatsappBtn" href="https://wa.me/917359145348" target="_blank" rel="noopener noreferrer" class="btn btn-outline-gold" style="padding: 0.5rem 1rem; font-size: 0.8rem;">
-                  <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp Now
-                </a>
-              </div>
-            </div>
+            <div id="formNotice" class="form-submission-notice" style="display: none;"></div>
 
           </form>
 
@@ -4781,21 +4774,21 @@
         <form id="modalConsultationForm" onsubmit="handleModalFormSubmission(event)">
           <div class="form-group">
             <label class="form-label">Full Name <span class="req">*</span></label>
-            <input type="text" id="modalName" class="form-control" placeholder="Your Name" required />
+            <input type="text" id="modalName" name="name" class="form-control" placeholder="Your Name" required />
           </div>
           <div class="form-row">
             <div class="form-group">
               <label class="form-label">Email <span class="req">*</span></label>
-              <input type="email" id="modalEmail" class="form-control" placeholder="name@example.com" required />
+              <input type="email" id="modalEmail" name="email" class="form-control" placeholder="name@example.com" required />
             </div>
             <div class="form-group">
               <label class="form-label">Phone <span class="req">*</span></label>
-              <input type="tel" id="modalPhone" class="form-control" placeholder="+91 7359145348" required />
+              <input type="tel" id="modalPhone" name="phone" class="form-control" placeholder="+91 7359145348" required />
             </div>
           </div>
           <div class="form-group">
             <label class="form-label">Target Destination <span class="req">*</span></label>
-            <select id="modalCountry" class="form-control" required>
+            <select id="modalCountry" name="country" class="form-control" required>
               <option value="Canada" selected>Canada</option>
               <option value="United Kingdom">United Kingdom</option>
               <option value="Australia">Australia</option>
@@ -4810,12 +4803,12 @@
             </select>
           </div>
           <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 1rem;">
-            <span>Confirm Consultation Details</span>
+            <span class="modal-submit-text">Confirm Consultation Details</span>
             <i class="fa-solid fa-arrow-right"></i>
           </button>
         </form>
 
-        <div id="modalNotice" class="form-submission-notice" style="margin-top: 1rem;">
+        <div id="modalNotice" class="form-submission-notice" style="margin-top: 1rem; display: none;">
           <i class="fa-solid fa-circle-check" style="margin-right: 6px;"></i>
           <strong>Details Recorded:</strong> Connect your API or continue directly with an advisor via WhatsApp.
           <div style="margin-top: 10px;">
@@ -5446,12 +5439,14 @@
     function handleFormSubmission(e) {
       e.preventDefault();
 
+      const form = e.currentTarget;
       const name = document.getElementById('fullName');
       const email = document.getElementById('emailAddress');
       const phone = document.getElementById('phoneNumber');
       const country = document.getElementById('countryInterest');
-      const message = document.getElementById('userMessage').value;
       const notice = document.getElementById('formNotice');
+      const submitButton = form.querySelector('button[type="submit"]');
+      const submitText = submitButton ? submitButton.querySelector('.submit-text') : null;
 
       let isValid = true;
 
@@ -5499,46 +5494,117 @@
 
       if (!isValid) return;
 
-      // Prepare WhatsApp pre-filled link
-      const waText = encodeURIComponent(
-        `Hello Falcon Migration,
-
-I would like to request a consultation:
-` +
-        `• Name: ${name.value.trim()}
-` +
-        `• Email: ${email.value.trim()}
-` +
-        `• Phone: ${phone.value.trim()}
-` +
-        `• Country: ${country.value}
-` +
-        (message.trim() ? `• Note: ${message.trim()}
-` : '')
-      );
-
-      const directWaBtn = document.getElementById('directWhatsappBtn');
-      if (directWaBtn) {
-        directWaBtn.href = `https://wa.me/917359145348?text=${waText}`;
+      if (submitButton) {
+        submitButton.disabled = true;
+      }
+      if (submitText) {
+        submitText.textContent = 'Sending...';
       }
 
-      notice.className = 'form-submission-notice success';
+      notice.className = 'form-submission-notice';
+      notice.textContent = 'Sending...';
       notice.style.display = 'block';
-      notice.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      if (window.emailjs) {
+        emailjs.init({ publicKey: 'MbNGS2LdWr55JEWT_' });
+      }
+
+      emailjs.sendForm('service_3ie8t8j', 'template_7akxzul', form)
+        .then(function() {
+          console.log('EmailJS: enquiry sent successfully.');
+          notice.className = 'form-submission-notice success';
+          notice.textContent = 'Thank you! Your enquiry has been sent successfully.';
+          notice.style.display = 'block';
+          form.reset();
+          if (submitButton) {
+            submitButton.disabled = false;
+          }
+          if (submitText) {
+            submitText.textContent = 'Send Enquiry';
+          }
+          notice.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        })
+        .catch(function(error) {
+          console.error('EmailJS send failed:', error);
+          notice.className = 'form-submission-notice error';
+          notice.textContent = 'Something went wrong. Please try again.';
+          notice.style.display = 'block';
+          if (submitButton) {
+            submitButton.disabled = false;
+          }
+          if (submitText) {
+            submitText.textContent = 'Send Enquiry';
+          }
+          notice.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
     }
 
     function handleModalFormSubmission(e) {
       e.preventDefault();
+
+      const form = e.currentTarget;
       const modalNotice = document.getElementById('modalNotice');
-      const name = document.getElementById('modalName').value;
-      const email = document.getElementById('modalEmail').value;
-      const phone = document.getElementById('modalPhone').value;
+      const submitButton = form.querySelector('button[type="submit"]');
+      const submitText = submitButton ? submitButton.querySelector('.modal-submit-text') : null;
+      const name = document.getElementById('modalName').value.trim();
+      const email = document.getElementById('modalEmail').value.trim();
+      const phone = document.getElementById('modalPhone').value.trim();
       const country = document.getElementById('modalCountry').value;
 
-      const waText = encodeURIComponent(`Hello Falcon Migration, I would like to book a consultation for ${country}. Name: ${name}, Phone: ${phone}, Email: ${email}`);
-      modalNotice.querySelector('a').href = `https://wa.me/917359145348?text=${waText}`;
-      modalNotice.className = 'form-submission-notice success';
+      if (!name || !email || !phone || !country) {
+        modalNotice.className = 'form-submission-notice error';
+        modalNotice.innerHTML = '<i class="fa-solid fa-circle-exclamation" style="margin-right: 6px;"></i><strong>Please complete all required fields.</strong>';
+        modalNotice.style.display = 'block';
+        return;
+      }
+
+      if (submitButton) {
+        submitButton.disabled = true;
+      }
+      if (submitText) {
+        submitText.textContent = 'Sending...';
+      }
+
+      modalNotice.className = 'form-submission-notice';
+      modalNotice.innerHTML = 'Sending...';
       modalNotice.style.display = 'block';
+
+      if (window.emailjs) {
+        emailjs.init({ publicKey: 'MbNGS2LdWr55JEWT_' });
+      }
+
+      emailjs.sendForm('service_3ie8t8j', 'template_7akxzul', form)
+        .then(function() {
+          console.log('EmailJS: private consultation form sent successfully.');
+          modalNotice.className = 'form-submission-notice success';
+          modalNotice.innerHTML = '<i class="fa-solid fa-circle-check" style="margin-right: 6px;"></i><strong>Thank you! Your enquiry has been sent successfully.</strong>';
+          modalNotice.style.display = 'block';
+          form.reset();
+          if (submitButton) {
+            submitButton.disabled = false;
+          }
+          if (submitText) {
+            submitText.textContent = 'Confirm Consultation Details';
+          }
+        })
+        .catch(function(error) {
+          console.error('EmailJS private consultation send failed:', error);
+          modalNotice.className = 'form-submission-notice error';
+          modalNotice.innerHTML = '<i class="fa-solid fa-circle-exclamation" style="margin-right: 6px;"></i><strong>Something went wrong. Please try again.</strong>';
+          modalNotice.style.display = 'block';
+          if (submitButton) {
+            submitButton.disabled = false;
+          }
+          if (submitText) {
+            submitText.textContent = 'Confirm Consultation Details';
+          }
+        });
+
+      const waText = encodeURIComponent(`Hello Falcon Migration, I would like to book a consultation for ${country}. Name: ${name}, Phone: ${phone}, Email: ${email}`);
+      const whatsappLink = modalNotice.querySelector('a');
+      if (whatsappLink) {
+        whatsappLink.href = `https://wa.me/917359145348?text=${waText}`;
+      }
     }
 
     /* ==========================================================================
